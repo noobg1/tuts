@@ -1,2 +1,2 @@
-var example = 'some string';
-console.log(example);
+var demoString = 'this is a string';
+console.log(demoString);
