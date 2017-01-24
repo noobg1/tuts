@@ -1,7 +1,7 @@
 var index = 0;
 
 function toReduce(wordsArray, toReduceUtility, initialCount) {
-    if (wordsArray.length == index) return;
+    if (wordsArray.length === index) return;
     else {
         var updatedCount = toReduceUtility(initialCount, wordsArray[index++]);
         toReduce(wordsArray, toReduceUtility, updatedCount);

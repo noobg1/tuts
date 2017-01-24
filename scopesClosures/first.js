@@ -7,6 +7,6 @@ function foo()
         bar = true;
     }
 
-    return zip
+    return zip;
     
 }
