@@ -1,7 +1,8 @@
 function repeat(operation, num) {
     // Modify this so it doesn't cause a stack overflow!
     if (num <= 0) return
-    setTimeout(operation, 50);
+    //setTimeout(operation, 50);
+    operation();
     return repeat(operation, --num)
 }
 
