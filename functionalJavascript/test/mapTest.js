@@ -13,7 +13,7 @@ describe('Checking on map function usage taking array as input and giving array 
   it('should be twice the array value with elements being string numbers with some input being string number', function () {
     expect(testMap(['2', '3', '4', 5])).to.eqls([4, 6, 8, 10]);
   });
-  it('should return empty array on given empty array input', function () {
+  it('should return empty array on given empty array input', function (XYZ) {
     expect(testMap([])).to.eqls([]);
   });
 
