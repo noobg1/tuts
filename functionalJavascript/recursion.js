@@ -10,8 +10,11 @@ function toReduceUtility(wordsArray, reduceHelper, initialObject, index = 0, err
   }
 }
 
-function toReduce(wordsArray, reduceHelper, initialObject)
-{
+function toReduce(wordsArray, reduceHelper, initialObject = {})
+{ 
+  if(typeof reduceHelper !== 'function') 
+    return 'Expecting function as second argument given: ' + 
+    typeof reduceHelper;
   var errorArray = [], index = 0, resultObject;
   resultObject = toReduceUtility(wordsArray, reduceHelper, initialObject, index, errorArray);
   if(errorArray.length === 0)

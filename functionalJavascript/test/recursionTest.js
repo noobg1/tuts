@@ -46,6 +46,14 @@ describe('#positive cases : toReduce function takes (String array, helper functi
     expect(testFunction(inputWordArray, reduceHelper,initialObject)).to.eqls(outputObject);
 
   });
+
+  it('should return reduced object for string array with skipping initialObject object argument',function(){
+    var inputWordArray = ['qwerty', 'QWERTY', 'non', 'qwerty', 'blah'] ;//,'',''];
+    var initialObject = {};
+    var outputObject = { qwerty: 2, QWERTY: 1, blah: 1, non: 1};
+    expect(testFunction(inputWordArray, reduceHelper)).to.eqls(outputObject);
+
+  });
   
 
 });
@@ -66,6 +74,22 @@ describe('#negative cases :toReduce function takes (String array, helper functio
     //var outputObject = { qwerty: 2, blah: 2, non: 1,'': 1, undefined: 1};
     
     expect(testFunction(inputWordArray, reduceHelper,initialObject)).to.eqls('undefined elements at index : 2,4,6');
+  });
+
+  it('should return error message for non function second argument',function(){
+    var inputWordArray = ['123', 'blah', , 'qwerty', , '', {}];
+    var initialObject = {};
+    //var outputObject = { qwerty: 2, blah: 2, non: 1,'': 1, undefined: 1};
+    
+    expect(testFunction(inputWordArray, {},initialObject)).to.eqls('Expecting function as second argument given: object');
+  });
+
+  it('should return error message for non function second argument',function(){
+    var inputWordArray = ['123', 'blah', , 'qwerty', , '', {}];
+    var initialObject = {};
+    //var outputObject = { qwerty: 2, blah: 2, non: 1,'': 1, undefined: 1};
+    
+    expect(testFunction(inputWordArray, [2,3,4],initialObject)).to.eqls('Expecting function as second argument given: object');
   });
 
 });
