@@ -1,25 +1,44 @@
 var fs = require('fs');
 var directory = process.argv[2];
 var extensionName = process.argv[3];
+var stats = fs.statSync(directory);
+
+function isValidDirectory(directory) {
+  if (!directory) {
+    console.log('Directory is empty');
+    return false;
+  }
+  return true;
+}
+
 
 function filterExternsion(file) {
   if (file.split('.')[1] === extensionName)
     return file;
 }
 
-fs.readdir(directory, function (error, list) {
-  try {
-    if (error) throw error;
-    var filteredList = list.filter(filterExternsion);
-    for (var iter = 0; iter < filteredList.length; iter++) {
-      console.log(filteredList[iter]);
-    }
-  }
-  catch (error) {
-    console.log(`Error Ocurred: ${error}`);
+function getListOfFiles() {
+
+  if (!isValidDirectory(directory)) {
+    return;
   }
 
-})
+
+  fs.readdir(directory, function (error, list) {
+    try {
+      if (error) throw error;
+      var filteredList = list.filter(filterExternsion);
+      for (var iter = 0; iter < filteredList.length; iter++) {
+        console.log(filteredList[iter]);
+      }
+    }
+    catch (error) {
+      console.log(`Error Ocurred: ${error}`);
+    }
+  });
+}
+
+getListOfFiles();
 
 
 
