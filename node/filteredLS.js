@@ -4,8 +4,8 @@ var extensionName = process.argv[3];
 
 
 function isValidDirectory(directory) {
-  if (!directory) {
-    console.log('Directory is empty');
+  if (!fs.existsSync(directory)) {
+    console.log('Directory input is invalid');
     return false;
   }
   return true;
@@ -22,6 +22,7 @@ function getListOfFiles() {
   if (!isValidDirectory(directory)) {
     return;
   }
+
   fs.readdir(directory, function (error, list) {
       try {
         if (error) throw error;

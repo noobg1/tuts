@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo testing for getting list of files with extension specified in current directory
-output=$(node filteredLS.js ./ js)
+output=$(node callFilterModule.js ./ js)
 if [ "$output" "==" 'babsySteps.js
 callFilterModule.js
 filteredLS.js
@@ -16,7 +16,7 @@ else
 fi
 
 echo testing for getting list of files with extension specified in some directory
-output=$(node filteredLS.js ~/labs/tuts/ md)
+output=$(node callFilterModule.js ~/labs/tuts/ md)
 if [ "$output" "==" 'README.md' ]; then
     echo "\u2713 passed"
 else
@@ -24,7 +24,7 @@ else
 fi
 
 echo testing for no extension passed
-output=$(node filteredLS.js ./ )
+output=$(node callFilterModule.js ./ )
 if [ "$output" "==" 'test' ]; then
     echo "\u2713 passed"
 else
@@ -32,7 +32,7 @@ else
 fi
 
 echo testing for directory argument is not passed
-output=$(node filteredLS.js )
+output=$(node callFilterModule.js )
 if [ "$output" "==" 'Directory input is invalid' ]; then
     echo "\u2713 passed"
 else
@@ -40,7 +40,7 @@ else
 fi
 
 echo testing for extension file not in directory 
-output=$(node filteredLS.js ./ ms)
+output=$(node callFilterModule.js ./ ms)
 if [ "$output" "==" '' ]; then
     echo "\u2713 passed"
 else
@@ -48,7 +48,7 @@ else
 fi
 
 echo testing for directory argument not present
-output=$(node filteredLS.js )
+output=$(node callFilterModule.js )
 if [ "$output" "==" 'Directory input is invalid' ]; then
     echo "\u2713 passed"
 else
