@@ -3,12 +3,15 @@ var router = express.Router()
 const fs = require('fs')
 const file = 'sample.txt'
 
+router.get('/', function (req, res) {
+  res.redirect('/read')
+})
+
 router.get('/read', function (req, res) {
   let result
   fs.readFile(file, function (error, data) {
     if (error) console.log(error)
     else {
-      console.log(typeof data.toString())
       result = data.toString().split('\n')
       res.render('pages/index', {
         data: result
@@ -19,10 +22,9 @@ router.get('/read', function (req, res) {
 
 router.post('/write', function (req, res) {
 
-  fs.appendFile(file, req.body.name, (error) => {
+  fs.appendFile(file, req.body.data + '<br>\n', (error) => {
     if (error) throw error
-    console.log('It\'s saved!')
-    res.end('done')
+    res.redirect('/')
   })
 })
 
@@ -42,10 +44,9 @@ router.post('/update', function (req, res) {
     finalResult = result.join('\n')
     fs.writeFile(file, finalResult, 'utf8', function (err) {
       if (err) return console.log(err)
-      res.send('done')
+      res.redirect('/')
     })
   })
-  console.log(req.body.index, req.body.newData)
 })
 
 router.post('/delete', function (req, res) {
@@ -56,18 +57,16 @@ router.post('/delete', function (req, res) {
     }
     result = data.split('\n')
     if (result.length > req.body.index) {
-      console.log(result)
       result.splice(req.body.index, 1)
-      console.log(result)
     } else {
       res.sendStatus(500)
     }
     finalResult = result.join('\n')
     fs.writeFile(file, finalResult, 'utf8', function (err) {
       if (err) return console.log(err)
-      res.send('done')
+      res.redirect('/')
     })
   })
 })
 
-module.exports = router;
+module.exports = router
