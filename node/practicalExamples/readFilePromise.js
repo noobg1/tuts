@@ -12,7 +12,7 @@ let readFile = new Promise(function (resolve, reject) {
 
 readFile.then(function (data) {
   console.log(data.toString());
-})
+  })
   .catch(function (error) {
     console.log(error);
   });
