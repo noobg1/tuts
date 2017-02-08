@@ -4,7 +4,7 @@ const fs = require('fs')
 const file = 'sample.txt'
 
 router.get('/', function (req, res) {
-  res.redirect('/read')
+  res.render('pages/home')
 })
 
 router.get('/read', function (req, res) {

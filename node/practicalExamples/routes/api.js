@@ -1,67 +1,70 @@
-var express = require('express')
-var router = express.Router()
-const fs = require('fs')
-const file = 'sample.txt'
+const express = require('express')
+const router = express.Router()
+const path = require('path')
+const dbOperations = require(path.join(__dirname, '../todoAppDbOperations'))
 
 router.get('/read', function (req, res) {
-  fs.readFile(file, function (error, data) {
-    if (error) console.log(error)
-    else {
-      console.log(data.toString())
-      res.send(`${data.toString()}`)
-    }
+  dbOperations.read()
+  .then(function (results) {
+    res.status(200).send(results[0])
+  })
+  .catch(function (error) {
+    console.log(error)
+    res.status(500).send(error)
   })
 })
 
-router.post('/write/:text', function (req, res) {
-  fs.appendFile(file, `${JSON.stringify(req.params['text'])}<br>\n`, (error) => {
-    if (error) throw error
-    console.log('It\'s saved!')
-    res.end('done')
+router.post('/write/:task', function (req, res) {
+  let description = req.params['task']
+  dbOperations.insert(description)
+  .then(function (results) {
+    res.status(200).send('{ Task added }')
+  })
+  .catch(function (error) {
+    res.status(500).send(error)
   })
 })
 
-router.put('/update/:lineNumber', function (req, res) {
-  let result, finalResult
-  fs.readFile(file, 'utf8', function (err, data) {
-    if (err) {
-      return console.log(err)
+router.put('/update/:id', function (req, res) {
+  const id = req.params.id
+  const description = req.body['task']
+  const status = req.body['status']
+  dbOperations.update(description, id, status)
+  .then(function (results) {
+    if (results[1].rowCount < 1) {
+      throw { errCode: 501,
+        message: `id ${id} is invalid`
+      }
     }
-    result = data.split('\n')
-    if (result.length > req.params.lineNumber) {
-      result[req.params.lineNumber] = req.body['data'] + '<br>'
-    } else {
-      res.sendStatus(500)
-    }
-    finalResult = result.join('\n')
-    fs.writeFile(file, finalResult, 'utf8', function (err) {
-      if (err) return console.log(err)
-      res.send('done')
-    })
+    res.status(200).send(`{ Updated task for given id = ${id} }`)
   })
-  console.log(req.params.lineNumber, req.body['data'])
-})
-
-router.delete('/delete/:lineNumber', function (req, res) {
-  let result, finalResult
-  fs.readFile(file, 'utf8', function (err, data) {
-    if (err) {
-      return console.log(err)
+  .catch(function (error) {
+    if (error.errCode) {
+      res.status(error.errCode).send({ message: error.message })
+      return
     }
-    result = data.split('\n')
-    if (result.length > req.params.lineNumber) {
-      console.log(result)
-      result.splice(req.params.lineNumber, 1)
-      console.log(result)
-    } else {
-      res.sendStatus(500)
-    }
-    finalResult = result.join('\n')
-    fs.writeFile(file, finalResult, 'utf8', function (err) {
-      if (err) return console.log(err)
-      res.send('done')
-    })
+    res.sendStatus(500)
   })
 })
 
-module.exports = router;
+router.delete('/delete/:id', function (req, res) {
+  const id = req.params.id
+  dbOperations.destroy(id)
+  .then(function (results) {
+    if (results[1].rowCount < 1) {
+      throw { errCode: 501,
+        message: `id ${id} is invalid`
+      }
+    }
+    res.status(200).send(`{ Deleted task id = ${id}}`)
+  })
+  .catch(function (error) {
+    if (error.errCode) {
+      res.status(error.errCode).send({ message: error.message })
+      return
+    }
+    res.sendStatus(500)
+  })
+})
+
+module.exports = router

@@ -1,12 +1,18 @@
 const express = require('express')
 const app = express()
+const path = require('path')
 const bodyParser = require('body-parser')
+const appRoutes = require(path.join(__dirname, '/routes/mainRoute'))
+const apiRoutes = require('./routes/api')
+
 // set the view engine to ejs
 app.set('view engine', 'ejs')
 
-app.use(bodyParser())
-app.use('/api', require('./routes/api'))
-app.use(require('./routes/mainRoute'))
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('public'))
+app.use('/api', apiRoutes)
+app.use(appRoutes)
 
 
 app.listen(8001)
