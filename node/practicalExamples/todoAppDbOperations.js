@@ -9,7 +9,12 @@ function insert (description) {
 }
 
 function update (description, id, status = false) {
-  return connectionObject.query('UPDATE tasks SET DESCRIPTION = ?, STATUS = ? WHERE ID = ?;', { replacements: [description, status, id] })
+  if (!description) {
+    return connectionObject.query('UPDATE tasks SET STATUS = ? WHERE id = ?;', { replacements: [status, id] })
+  } else {
+    return connectionObject.query('UPDATE tasks SET DESCRIPTION = ?, STATUS = ? WHERE id = ?;', { replacements: [description, status, id] })
+  }
+  // return connectionObject.query('UPDATE tasks SET DESCRIPTION = ?, STATUS = ? WHERE ID = ?;', { replacements: [description, status, id] })
 }
 
 function destroy (id) {

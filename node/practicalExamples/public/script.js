@@ -12,6 +12,18 @@ function update(newTaskObject){
     
 }
 
+function updateStatus(oldStatus, id){
+    console.log(oldStatus)
+    let status = oldStatus === true ? false : true;
+    $.ajax({
+        url: `/api/update/${id}`,
+        type: 'PUT',
+        data: `status=${status}`,
+        success: read
+    });
+    
+}
+
 function read() {
     $.get( "/api/read", function( data ) {
     let result = '';
@@ -20,7 +32,8 @@ function read() {
     for(let iter = 0; iter < data.length; iter++) {
         let remove = `<span class="glyphicon glyphicon-remove" onclick="deleteTask(${data[iter].id})"></span>`;
         let statusFlag = `<span class="glyphicon glyphicon-remove" onclick="deleteTask(${data[iter].status})"></span>`;
-        let statusFlagHtml = data[iter].status === false ? "&#9711;" : "&#9673;";
+        let updateButtonCallback = `onclick="updateStatus(${data[iter].status}, ${data[iter].id})" `
+        let statusFlagHtml = data[iter].status === false ? `<span ${updateButtonCallback}> &#9711; </span>` : `<span ${updateButtonCallback}> &#9673; </span>`;
         let done = `<span class="glyphicon glyphicon-ok"></span>`
 
         result += ` <li id="${data[iter].id}"> ${statusFlagHtml}
