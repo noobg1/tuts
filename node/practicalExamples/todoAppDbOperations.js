@@ -1,7 +1,7 @@
 const connectionObject = require('./connectDb')
 
 function read () {
-  return connectionObject.query('SELECT ID, DESCRIPTION, STATUS FROM tasks;')
+  return connectionObject.query('SELECT ID, DESCRIPTION, STATUS FROM tasks order by ID ASC;')
 }
 
 function insert (description) {

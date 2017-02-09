@@ -12,18 +12,20 @@
         <div class="jumbotron">
         <p><b>Todo App :  </b>Your list....</p>
             <div id="result">
+            <ul id="list">
 
+            </ul>
             </div>
         </div>
 
-        <form action="/read" method = "post">
+        <form  >
         <h4>Add a task<h4>
           <div class="row">
            <div class="col-lg-6">
               <div class="input-group">
                 <input id="task" type="text" class="form-control" placeholder="Enter new task ..." name="data">
                 <span class="input-group-btn">
-                  <button id = "button" class="btn btn-default" type="submit">Go!</button>
+                  <button id = "writeButton" class="btn btn-default" type="submit">Go!</button>
                 </span>
               </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
@@ -32,7 +34,7 @@
         <br>
         <br>
 
-        <form action="/" >
+        <!--<form  >
         <h4>Delete a task<h4>
           <div class="form-group">
           <select name = "index" id="indices">
@@ -41,14 +43,29 @@
             
             <button id="deleteButton" type="submit" class="btn btn-default">Go! </button>
           </div>
+          </form>
+
+            <form  >
+                <h4>Update a task<h4>
+                <div class="row">
+                    <select name = "index" id="deleteIndices">
+            
+                    </select>
+                
+                        <div class="col-lg-6">
+                        <div class="input-group">
+                            <input id="updateTask" type="text" class="form-control" placeholder="Enter new task name ..." name="newData">
+                            <span class="input-group-btn">
+                                <button id="updateButton" class="btn btn-default" type="submit">Go!</button>
+                            </span>
+                        </div>
+                        </div>
+                    </div>
+                </form>-->
 
         
 
     </main>
-
-    <footer>
-        <% include ../partials/footer %>
-    </footer>
     
 </body>
 
