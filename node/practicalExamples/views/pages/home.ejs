@@ -3,12 +3,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <% include ../partials/head %>
+    
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/base.css">
 </head>
 
 <body class="container">
 
     <main>
+            <section class="todoapp">
+            <header class="header">
+                <form id="writeForm">
+                    <h1>todos</h1>
+                    <input id="task" class="new-todo" placeholder="What needs to be done?" autofocus>
+                </form>
+			</header>
+            <section class="main">
+				<input class="toggle-all" type="checkbox">
+				<label for="toggle-all">Mark all as complete</label>
+                <div id="result">
+                    <ul id="list" class="todo-list">
+                    
+
+                    </ul>
+                    </div>
+				<ul class="todo-list"></ul>
+			</section>
+
+            </section>
         <div class="jumbotron">
         <p><b>Todo App :  </b>Your list....</p>
             <div id="result">
@@ -18,7 +40,7 @@
             </div>
         </div>
 
-        
+       <!-- <form id="writeForm">
         <h4>Add a task<h4>
           <div class="row">
            <div class="col-lg-6">
@@ -27,43 +49,12 @@
                 <span class="input-group-btn">
                   <button id = "writeButton" class="btn btn-default" type="submit">Go!</button>
                 </span>
-              </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-          </div><!-- /.row -->
-       
-        <br>
-        <br>
-
-        <!--<form  >
-        <h4>Delete a task<h4>
-          <div class="form-group">
-          <select name = "index" id="indices">
-            
-          </select>
-            
-            <button id="deleteButton" type="submit" class="btn btn-default">Go! </button>
+              </div>
+            </div>
           </div>
-          </form>
-
-            <form  >
-                <h4>Update a task<h4>
-                <div class="row">
-                    <select name = "index" id="deleteIndices">
-            
-                    </select>
-                
-                        <div class="col-lg-6">
-                        <div class="input-group">
-                            <input id="updateTask" type="text" class="form-control" placeholder="Enter new task name ..." name="newData">
-                            <span class="input-group-btn">
-                                <button id="updateButton" class="btn btn-default" type="submit">Go!</button>
-                            </span>
-                        </div>
-                        </div>
-                    </div>
-                </form>-->
-
-        
+       </form>
+        <br>
+        <br> -->       
 
     </main>
     
