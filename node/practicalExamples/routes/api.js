@@ -18,7 +18,8 @@ router.post('/write/:task', function (req, res) {
   let description = req.params['task']
   dbOperations.insert(description)
   .then(function (results) {
-    res.status(200).send('{ Task added }')
+    console.log(results[0].id)
+    res.status(200).send({ id: results[0].id, message: 'Task added' })
   })
   .catch(function (error) {
     res.status(500).send(error)

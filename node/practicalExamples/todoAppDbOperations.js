@@ -5,7 +5,7 @@ function read () {
 }
 
 function insert (description) {
-  return connectionObject.query('INSERT INTO tasks (DESCRIPTION, STATUS) VALUES ( ?, FALSE);', { replacements: [description] })
+  return connectionObject.query('INSERT INTO tasks (DESCRIPTION, STATUS) VALUES ( ?, FALSE) RETURNING id;', { replacements: [description] })
 }
 
 function update (description, id, status = false) {
