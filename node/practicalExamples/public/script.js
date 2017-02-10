@@ -19,7 +19,7 @@ function update(newTaskObject){
 
 function updateStatus(id, oldStatus){
     console.log(oldStatus)
-    const status = oldStatus === true ? false : true;
+    const status = oldStatus === true ? 'false' : 'true';
     console.log(status);
     $.ajax({
         url: `/api/update/${id}`,
@@ -71,5 +71,9 @@ $("#writeButton").click(function(){
   });
     //read()
 });
+
+// $("#list").on("dblclick", function(event) {
+    
+// });
 
 read()
