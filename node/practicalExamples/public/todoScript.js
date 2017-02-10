@@ -14,16 +14,20 @@ function addItem () {
   const content = $('#id-new-todo').val()
   $.post(`/api/write/${escapeHtml(content)}`, function (data) {
     $(`#id-todo-list`).append(`
-       <li id="${data}">
+       <li id="${data.id}">
        <div class="view">
-          <input class ="checkbox toggle" type="checkbox" name="checkbox" id="id${data}" >
-          <label for="id${data}">${content}</label>
+          <input class ="checkbox toggle" type="checkbox" name="checkbox" id="id${data.id}" >
+          <label for="id${data.id}">${content}</label>
           <input class="editTextbox" type="text" name="editableText" style="display:none">
           <button class="destroy"></button>
         </div>
         </li>`)
+        console.log(data.id);
+  }).done(function() {
+    afterRead();
   })
   $('#id-new-todo').val('')
+  
 }
 
 function updateStatus (id, status) {
@@ -66,6 +70,7 @@ function afterRead () {
   })
 
   $('.checkbox').change(function () {
+    $(this).siblings('label').toggleClass("completed");
     (this.checked) ? updateStatus($(this).closest('li').attr('id'), true) : updateStatus($(this).closest('li').attr('id'), false)
   })
 
@@ -77,7 +82,7 @@ function afterRead () {
   })
 
   $('.editTextbox').blur(function () {
-    console.log('edit')
+    console.log('edit');
     //console.log($(this).parent('div').parent('li').removeClass("editing"));
     console.log($(this).hasClass("editing"))
     const value = $(this).hide().val()
