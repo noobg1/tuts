@@ -19,12 +19,12 @@ function addItem () {
           <input class ="checkbox toggle" type="checkbox" name="checkbox" id="id${data.id}" >
           <label for="id${data.id}">${content}</label>
           <input class="editTextbox" type="text" name="editableText" style="display:none">
-          <button class="destroy"></button>
+          <button id="button-${data.id}" class="destroy"></button>
         </div>
         </li>`)
-        console.log(data.id);
+        afterRead(data.id);
   }).done(function() {
-    afterRead();
+    
   })
   $('#id-new-todo').val('')
   
@@ -37,6 +37,7 @@ function updateStatus (id, status) {
     data: `status=${status}`,
     success: (result) => (result)
   })
+  //afterRead(id);
 }
 
 function updateDescription (id, description) {
@@ -55,40 +56,53 @@ function deleteItem (id) {
     success: (result) => (
       $(`li#${id}`).remove())
   })
+  //afterRead(id);
 }
 
-function afterRead () {
-  $('#id-new-todo').keyup(function (event) {
-    if (event.keyCode === 13) {
-      addItem()
-    }
-  })
-  /*$('#write_button').click(() => addItem())*/
+const keyEnter = function (event) {
+  if (event.keyCode === 13) {
+    addItem()
+  }
+}
 
-  $('.destroy').click(function () {
-    deleteItem($(this).closest('li').attr('id'))
-  })
+const destroy = function (id) {
+  console.trace()
+  $(`${id}`).remove()
+  deleteItem($(this).closest('li').attr('id'))
+}
+const checkboxChange = function () {
+  $(this).siblings('label').toggleClass("completed");
+  (this.checked) ? updateStatus($(this).closest('li').attr('id'), true) : updateStatus($(this).closest('li').attr('id'), false)
+}
 
-  $('.checkbox').change(function () {
-    $(this).siblings('label').toggleClass("completed");
-    (this.checked) ? updateStatus($(this).closest('li').attr('id'), true) : updateStatus($(this).closest('li').attr('id'), false)
-  })
+const editTask = function () {
+  // $(this).addClass("editing");
+  // console.log($(this).hasClass("editing"))
+  const value = $(this).children('div').children('label').hide().text();
+  $(this).children('div').children('.editTextbox').show().val(value).focus();
+}
 
-  $('li').dblclick(function () {
-    // $(this).addClass("editing");
-    // console.log($(this).hasClass("editing"))
-    const value = $(this).children('div').children('label').hide().text();
-    $(this).children('div').children('.editTextbox').show().val(value).focus();
-  })
+const afterEditTask = function () {
+  console.log('edit');
+  //console.log($(this).parent('div').parent('li').removeClass("editing"));
+  console.log($(this).hasClass("editing"))
+  const value = $(this).hide().val()
+  $(this).siblings('label').text(value).show()
+  updateDescription($(this).closest('li').attr('id'), value)
+}
 
-  $('.editTextbox').blur(function () {
-    console.log('edit');
-    //console.log($(this).parent('div').parent('li').removeClass("editing"));
-    console.log($(this).hasClass("editing"))
-    const value = $(this).hide().val()
-    $(this).siblings('label').text(value).show()
-    updateDescription($(this).closest('li').attr('id'), value)
-  })
+$('#id-new-todo').keyup(keyEnter);
+
+function afterRead (id) {
+  
+  console.log("id", id)
+  console.log($(`#${id}`).children('div').children(`.destroy`).attr('id'))
+
+  $(`#${id}`).children('div').children(`.checkbox`).change(checkboxChange)
+  
+  $(`#${id}`).children('div').children(`li`).dblclick(editTask)
+
+  $(`#${id}`).children('div').children(`.editTextbox`).blur(afterEditTask)
 }
 
 function read () {
@@ -107,11 +121,12 @@ function read () {
             <button class="destroy"></button>
           </div>
         </li>`
+        afterRead(item.id)
     })
     content += ''
     $('#id-todo-list').html(content)
     $('.editTextbox').hide()
-    afterRead()
+    
   })
 }
 
