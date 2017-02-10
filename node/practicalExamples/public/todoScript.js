@@ -1,4 +1,4 @@
-var entityMap = {
+const entityMap = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -8,20 +8,22 @@ var entityMap = {
   '`': '&#x60;',
   '=': '&#x3D;'
 }
-const escapeHtml = string => String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s])
+const escapeHtml = (string) => String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s])
 
 function addItem () {
-  const content = $('#new-todo').val()
+  const content = $('#id-new-todo').val()
   $.post(`/api/write/${escapeHtml(content)}`, function (data) {
-    $(`#result ul`).append(`
+    $(`#id-todo-list`).append(`
        <li id="${data}">
-          <input class ="checkbox" type="checkbox" name="checkbox" id="id${data}" >
+       <div class="view">
+          <input class ="checkbox toggle" type="checkbox" name="checkbox" id="id${data}" >
           <label for="id${data}">${content}</label>
           <input class="editTextbox" type="text" name="editableText" style="display:none">
-          <button class="delete">X</button>
+          <button class="destroy"></button>
+        </div>
         </li>`)
   })
-  $('#new-todo').val('')
+  $('#id-new-todo').val('')
 }
 
 function updateStatus (id, status) {
@@ -51,15 +53,15 @@ function deleteItem (id) {
   })
 }
 
-function afterRead () {// check this
-  $('#header #new-todo').keyup(function (event) {
+function afterRead () {
+  $('#id-new-todo').keyup(function (event) {
     if (event.keyCode === 13) {
       addItem()
     }
   })
   /*$('#write_button').click(() => addItem())*/
 
-  $('.delete').click(function () {
+  $('.destroy').click(function () {
     deleteItem($(this).closest('li').attr('id'))
   })
 
@@ -68,40 +70,46 @@ function afterRead () {// check this
   })
 
   $('li').dblclick(function () {
-    const value = $(this).find('label').hide().text()
-    $(this).find('.editTextbox').show().focus().val(value)
+    // $(this).addClass("editing");
+    // console.log($(this).hasClass("editing"))
+    const value = $(this).children('div').children('label').hide().text();
+    $(this).children('div').children('.editTextbox').show().val(value).focus();
   })
 
-  $('.editTextbox').focusout(function () {
+  $('.editTextbox').blur(function () {
     console.log('edit')
+    //console.log($(this).parent('div').parent('li').removeClass("editing"));
+    console.log($(this).hasClass("editing"))
     const value = $(this).hide().val()
-    $(this).prev().html($(this).val()).show()
+    $(this).siblings('label').text(value).show()
     updateDescription($(this).closest('li').attr('id'), value)
   })
 }
 
-function read (afterRead) {
+function read () {
   $.get('/api/read', (data) => {
-    let content = '<ul>'
-    let checked
+    let content = ''
+    let checked;
     data.forEach(function (item) {
       let description = escapeHtml(item.description)
       checked = (item.status === true) ? 'checked' : ''
       content += `
-        <li id="${item.id}">
-          <input class ="checkbox" type="checkbox" name="checkbox" id="id${item.id}" ${checked}>
-          <label for="id${item.id}">${description}</label>
-          <input class="editTextbox" type="text" name="editableText">
-          <button class="delete">X</button>
+        <li id="${item.id}" >
+          <div class="view">
+            <input class ="checkbox toggle" type="checkbox" name="checkbox" id="id${item.id}" ${checked}>
+            <label for="id${item.id}">${description}</label>
+            <input class="editTextbox" type="text" name="editableText">
+            <button class="destroy"></button>
+          </div>
         </li>`
     })
-    content += '</ul>'
-    $('#result').html(content)
+    content += ''
+    $('#id-todo-list').html(content)
     $('.editTextbox').hide()
     afterRead()
   })
 }
 
 $(document).ready(function () {
-  read(afterRead)
+  read()
 })

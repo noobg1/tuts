@@ -2,19 +2,43 @@
 
 <head>
   <title> TODO list </title>
-  <!--<link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/base.css">-->
-  <link rel="stylesheet" type="text/css" href="css/external.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/myStyle.css">
+  <!--<link rel="stylesheet" type="text/css" href="css/external.css">-->
 </head>
 
 <body>
-  <h1>todos</h1>
-  <div id="header">
-    <input id="new-todo" type="text" name="data" placeholder="What needs to be done?">
-    <!--<button id="write_button">ADD</button>-->
   </div>
-  <div id="result">
-  </div>
+
+      <section class="todoapp">
+          <header class="header">
+            <h1>todos</h1>
+            <input id="id-new-todo" class="new-todo" placeholder="What needs to be done?" autofocus>
+          </header>
+          <section class="main">
+            <input class="toggle-all" type="checkbox">
+            <label for="toggle-all">Mark all as complete</label>
+            <ul id="id-todo-list" class="todo-list">
+            
+            </ul>
+          </section>
+          <!--<footer class="footer">
+            <span class="todo-count"></span>
+            <ul class="filters">
+              <li>
+                <a href="#/" class="selected">All</a>
+              </li>
+              <li>
+                <a href="#/active">Active</a>
+              </li>
+              <li>
+                <a href="#/completed">Completed</a>
+              </li>
+            </ul>
+            <button class="clear-completed">Clear completed</button>
+          </footer>-->
+        </section>
+
    
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
