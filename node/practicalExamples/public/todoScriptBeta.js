@@ -35,7 +35,6 @@ function addItem () {
   const content = $('#id-new-todo').val()
   $.post(`/api/write/${escapeHtml(content)}`, function (data) {
     elementsArray[data.id] = {id: data.id, description: content, status: false};
-    console.log(elementsArray[data.id]);
     populate(elementsArray)
     $("ul").children().off();
     assignEventListeners(elementsArray);
@@ -126,33 +125,42 @@ function afterRead (id) {
     
     $(`#label-${id}`).dblclick(function () {
       console.log('dbclick', id);
-      //$(`#${id}`).addClass('editing');
-      const value = $(`#label-${id}`).hide().text()
-      $(`#tb-${id}`).show().focus().val(value)
+      const value = $(`#label-${id}`).hide().text();
+      $(`#tb-${id}`).show().focus().val(value);
     });
 
     $(`#tb-${id}`).focusout(function () {
-      console.log("uiguigui")
-      const value = $(`#tb-${id}`).hide().val()
-      $(`#label-${id}`).text(value).show()
-      updateDescription(id, value)
+      console.log('focusout');
+      const value = $(`#tb-${id}`).hide().val();
+      $(`#label-${id}`).text(value).show();
+      console.log(value)
+      if (value === '')
+        deleteItem(id);
+      else updateDescription(id, value);
+    });
+
+    $(`#tb-${id}`).keyup(function (event) {
+      if (event.which === 13) {
+        $(`#tb-${id}`).focusout()
+      } 
     })
 }
 
 
 
 function populate (data) {
-  let content = ''
+  let content = '';
   let checked;
+  let description;
   data.forEach(function (item) {
-      let description = escapeHtml(item.description)
+      description = escapeHtml(item.description)
       checked = (item.status === true) ? 'checked' : ''
       const className = (checked === '') ? 'active' : 'completed'
        content += 
        `<li id="${item.id}" class ="${className} ">
           <div class="view">
             <input class ="checkbox toggle" type="checkbox" name="checkbox" id="ckb-${item.id}" ${checked}>
-            <label id="label-${item.id}" for="ckb-${item.id}">${description}</label>
+            <label id="label-${item.id}" >${description}</label>
             <input id="tb-${item.id}" class="edit" type="text" name="editableText" style="display:none">
             <button id="btn-${item.id}" class="destroy"></button>
           </div>
@@ -220,4 +228,18 @@ $(window).on('hashchange', () => filterList())
 
 $(document).ready(function () {
   read()
+})
+
+
+
+$(`#test`).dblclick(function () {
+console.log('dbclick' );
+const value = $(`#test`).hide().text()
+$(`#test-in`).show().focus().val(value)
+});
+
+$(`#test-in`).focusout(function () {
+console.log("uiguigui")
+const value = $(`#test-in`).hide().val()
+$(`#test`).text(value).show()
 })
