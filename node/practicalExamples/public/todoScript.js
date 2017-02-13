@@ -19,12 +19,12 @@ function addItem () {
           <input class ="checkbox toggle" type="checkbox" name="checkbox" id="id${data.id}" >
           <label for="id${data.id}">${content}</label>
           <input class="editTextbox" type="text" name="editableText" style="display:none">
-          <button id="button-${data.id}" class="destroy"></button>
+          <button class="destroy"></button>
         </div>
         </li>`)
-        afterRead(data.id);
+        console.log(data.id);
   }).done(function() {
-    
+    afterRead();
   })
   $('#id-new-todo').val('')
   
@@ -37,7 +37,6 @@ function updateStatus (id, status) {
     data: `status=${status}`,
     success: (result) => (result)
   })
-  //afterRead(id);
 }
 
 function updateDescription (id, description) {
@@ -56,7 +55,6 @@ function deleteItem (id) {
     success: (result) => (
       $(`li#${id}`).remove())
   })
-  //afterRead(id);
 }
 
 const keyEnter = function (event) {
@@ -65,9 +63,7 @@ const keyEnter = function (event) {
   }
 }
 
-const destroy = function (id) {
-  console.trace()
-  $(`${id}`).remove()
+const destroy = function () {
   deleteItem($(this).closest('li').attr('id'))
 }
 const checkboxChange = function () {
@@ -93,16 +89,16 @@ const afterEditTask = function () {
 
 $('#id-new-todo').keyup(keyEnter);
 
-function afterRead (id) {
+function afterRead () {
   
-  console.log("id", id)
-  console.log($(`#${id}`).children('div').children(`.destroy`).attr('id'))
-
-  $(`#${id}`).children('div').children(`.checkbox`).change(checkboxChange)
   
-  $(`#${id}`).children('div').children(`li`).dblclick(editTask)
+  $('.destroy').click(destroy)
 
-  $(`#${id}`).children('div').children(`.editTextbox`).blur(afterEditTask)
+  $('.checkbox').change(checkboxChange)
+  
+  $('li').dblclick(editTask)
+
+  $('.editTextbox').blur(afterEditTask)
 }
 
 function read () {
@@ -121,12 +117,11 @@ function read () {
             <button class="destroy"></button>
           </div>
         </li>`
-        afterRead(item.id)
     })
     content += ''
     $('#id-todo-list').html(content)
     $('.editTextbox').hide()
-    
+    afterRead()
   })
 }
 

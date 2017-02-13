@@ -21,4 +21,8 @@ function destroy (id) {
   return connectionObject.query('DELETE FROM tasks WHERE ID = ?;', { replacements: [id] })
 }
 
-module.exports = { read, insert, update, destroy }
+function completedList() {
+  return connectionObject.query('SELECT ID, DESCRIPTION, STATUS FROM tasks WHERE STATUS = false')
+}
+
+module.exports = { read, insert, update, destroy, completedList }
