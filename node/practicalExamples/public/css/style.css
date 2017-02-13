@@ -84,11 +84,10 @@ input[type="checkbox"] {
 }
 
 .new-todo,
-.edit{
+.edit {
 	position: relative;
 	margin: 0;
-	width: 91%;
-	margin-left:50px;
+	width: 100%;
 	font-size: 24px;
 	font-family: inherit;
 	font-weight: inherit;
@@ -133,7 +132,7 @@ label[for='toggle-all'] {
 }
 
 .toggle-all:before {
-	content: 'â¯';
+	content: '❯';
 	font-size: 22px;
 	color: #e6e6e6;
 	padding: 10px 27px 10px 27px;
@@ -232,7 +231,7 @@ label[for='toggle-all'] {
 }
 
 .todo-list li .destroy:after {
-	content: 'x';/*'Ã—';*/
+	content: '×';
 }
 
 .todo-list li:hover .destroy {

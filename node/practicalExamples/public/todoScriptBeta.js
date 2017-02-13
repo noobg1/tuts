@@ -10,24 +10,23 @@ const entityMap = {
 }
 
 let elementsArray = [];
-let activeList = {}, completedList = {};
-let active, completed;let dataObject;
+
 const escapeHtml = (string) => String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s])
 
 function filterList () {
-  const url = location.hash
-  $('.filters a').prop('class', '')
+  const url = location.hash;
+  $('.filters a').prop('class', '');
   switch (url) {
-    case '#/': $('a[href$="#/"').attr('class', 'selected')
-      $('.new-todo li').show()
+    case '#/': $('a[href$="#/"').attr('class', 'selected');
+      $('.todo-list li').show();
       break
-    case '#/active': $('a[href$="#/active"]').attr('class', 'selected')
-      $('.new-todo .active').show()
-      $('.new-todo .completed').hide()
+    case '#/active': $('a[href$="#/active"]').attr('class', 'selected');
+      $('.todo-list .active').show();
+      $('.todo-list .completed').hide();
       break
-    case '#/completed': $('a[href$="#/completed" ]').attr('class', 'selected')
-      $('.new-todo .active').hide()
-      $('.new-todo .completed').show()
+    case '#/completed': $('a[href$="#/completed" ]').attr('class', 'selected');
+      $('.todo-list .active').hide();
+      $('.todo-list .completed').show();
       break
   }
 }
@@ -35,36 +34,16 @@ function filterList () {
 function addItem () {
   const content = $('#id-new-todo').val()
   $.post(`/api/write/${escapeHtml(content)}`, function (data) {
-    $(`#id-todo-list`).append(`
-       <li id="${data.id}">
-       <div class="view">
-          <input class ="checkbox toggle" type="checkbox" name="checkbox" id="ckb-${data.id}" >
-          <label id="label-${data.id}" for="ckb-${data.id}">${content}</label>
-          <input id="tb-${data.id}" class="edit" type="text" name="editableText" style="display:none">
-          <button id="btn-${data.id}" class="destroy"></button>
-        </div>
-        </li>`);
-        afterRead(data.id);
-        elementsArray.push(data);
-        populateFooter();
-        //console.log(data.id);
+    elementsArray[data.id] = {id: data.id, description: content, status: false};
+    console.log(elementsArray[data.id]);
+    populate(elementsArray)
+    $("ul").children().off();
+    assignEventListeners(elementsArray);
+    hideFooter();
+    populateFooter();
   }).done(function() {
-    
   })
   $('#id-new-todo').val('')
-  
-}
-
-function findItemIndex (id, list) {
-  var indexOfElement = -1;
-  
-  for (let iter = 0; iter < list.length; iter++) {
-    if (Number(list[iter].id) === Number(id)) {
-      indexOfElement = iter;
-      break;
-      }
-  }
-  return indexOfElement;
 }
 
 function updateStatus (id, status) {
@@ -72,9 +51,15 @@ function updateStatus (id, status) {
     url: `/api/update/${id}`,
     type: 'PUT',
     data: `status=${status}`,
-    success: (result) => (result)
+    success:  (result) => {
+      elementsArray[id].status = status;
+      populate(elementsArray)
+      $("ul").children().off();
+      assignEventListeners(elementsArray);
+      hideFooter();
+      populateFooter();
+    }
   });
-
 }
 
 function updateDescription (id, description) {
@@ -82,22 +67,43 @@ function updateDescription (id, description) {
     url: `/api/update/${id}`,
     type: 'PUT',
     data: `task=${escapeHtml(description)}`,
-    success: (result) => (result)
+    success: (result) => {
+      elementsArray[id].description = description;
+      populate(elementsArray);
+      $("ul").children().off();
+      assignEventListeners(elementsArray);
+      hideFooter();
+      populateFooter();
+    }
   })
 }
+
+function hideFooter () {
+  // console.log('hideWhenNoList')
+  if (Object.keys(elementsArray).length === 0) {
+    $('.footer').hide()
+    $('.toggle-all').hide()
+  } else {
+    $('.footer').show()
+    $('.toggle-all').show()
+  }
+}
+
 
 function deleteItem (id) {
   $.ajax({
     url: `/api/delete/${id}`,
     type: 'DELETE',
-    success: (result) => (
-      $(`li#${id}`).remove())
+    success: (result) => {
+      $(`li#${id}`).remove()
+      delete elementsArray[id];
+      populate(elementsArray);
+      $("ul").children().off();
+      assignEventListeners(elementsArray);
+      hideFooter();
+      populateFooter();
+    }
   });
-  // let index = findItemIndex(id, elementsArray);
-  // let elem = elementsArray.slice(index, 1);
-  // console.log(elementsArray, "eres")
-  // populate(elementsArray);
-  // populateFooter()
 }
 
 
@@ -106,6 +112,7 @@ $('#id-new-todo').keyup(function (event) {
     addItem()
   }
 });
+
 
 function afterRead (id) {
     $(`#btn-${id}`).click(function () {
@@ -118,15 +125,18 @@ function afterRead (id) {
     })
     
     $(`#label-${id}`).dblclick(function () {
+      console.log('dbclick', id);
+      //$(`#${id}`).addClass('editing');
       const value = $(`#label-${id}`).hide().text()
       $(`#tb-${id}`).show().focus().val(value)
-    })
+    });
 
     $(`#tb-${id}`).focusout(function () {
+      console.log("uiguigui")
       const value = $(`#tb-${id}`).hide().val()
       $(`#label-${id}`).text(value).show()
       updateDescription(id, value)
-  })
+    })
 }
 
 
@@ -139,7 +149,7 @@ function populate (data) {
       checked = (item.status === true) ? 'checked' : ''
       const className = (checked === '') ? 'active' : 'completed'
        content += 
-       `<li id="${item.id}" class ="${className}">
+       `<li id="${item.id}" class ="${className} ">
           <div class="view">
             <input class ="checkbox toggle" type="checkbox" name="checkbox" id="ckb-${item.id}" ${checked}>
             <label id="label-${item.id}" for="ckb-${item.id}">${description}</label>
@@ -149,16 +159,16 @@ function populate (data) {
         </li>`;
     })
     $('#id-todo-list').html(content);
-    assignEventListeners(data);
 }
 
 
 function populateFooter () {
   let numberOfItemsActive = 0;
   elementsArray.forEach(function (item) {
-    if(item.status === false)
+    if (item.status === false)
       numberOfItemsActive++;
-  })
+  });
+
   if(numberOfItemsActive === 1)
     $('.todo-count').text(`${numberOfItemsActive} item left`)
   else 
@@ -172,8 +182,9 @@ function read () {
     })
     populate(data);
     assignEventListeners(data);
+    hideFooter();
     populateFooter();
-    $('.editTextbox').hide();
+    $('.edit').hide();
   })
 }
 
@@ -183,35 +194,28 @@ function assignEventListeners (data) {
   })
 }
 
-$('#active').click(function () {
-      let activeData = [];
-      elementsArray.forEach(function(item) {
-        if(item.status === false)
-        activeData.push(item);
-      });
-      $('#id-todo-list').empty();
-      populate(activeData);
-      assignEventListeners(activeData);
-      
+$('#clear-completed-id').click(function () {
+  elementsArray.forEach(function (item) {
+    if (item.status === true) {
+      deleteItem(item.id);
+    }
   });
-
-  $('#completed').click(function () {
-      let completed = [];
-      elementsArray.forEach(function(item) {
-        if(item.status === true)
-        completed.push(item);
-      });
-      $('#id-todo-list').empty();
-      populate(completed);
-      assignEventListeners(completed);
-  });
-
-$('#all').click(function () {
-  console.log(elementsArray)
-  $('#id-todo-list').empty();
-  populate(elementsArray);
-  assignEventListeners(elementsArray);
 });
+
+function changeAllStatus (status) {
+  elementsArray.forEach(function (item) {
+   updateStatus(item.id, !item.status);
+  })
+}
+
+$('.toggle-all').change(function () {
+  const status = this.checked
+  const toggle = (status) ? 'check' : 'uncheck'
+  $('.toggle').prop('checked', status)
+  changeAllStatus(status)
+})
+
+$(window).on('hashchange', () => filterList())
 
 
 $(document).ready(function () {
