@@ -7,6 +7,10 @@ router.get('/', function (req, res) {
   res.render('pages/index')
 })
 
+router.get('/test', function (req, res) {
+  res.sendFile('indexTest.html')
+})
+
 router.get('/read', function (req, res) {
   let result
   fs.readFile(file, function (error, data) {
