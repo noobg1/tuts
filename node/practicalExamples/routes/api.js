@@ -14,16 +14,6 @@ router.get('/read', function (req, res) {
   })
 })
 
-router.get('/completed', function (req, res) {
-  dbOperations.completedList()
-  .then(function (results) {
-    res.status(200).send(results[0])
-  })
-  .catch(function (error) {
-    console.log(error)
-    res.status(500).send(error)
-  })
-})
 
 router.post('/write/:task', function (req, res) {
   let description = req.params['task']

@@ -130,6 +130,7 @@ function afterRead (id) {
   $(`#ckb-${id}`).change(function () {
     $(`#ckb-${id}`).toggleClass('completed')
     $(`#ckb-${id}`).is(':checked') ? updateStatus(id, true) : updateStatus(id, false)
+
   })
 
   $(`#label-${id}`).dblclick(function () {
