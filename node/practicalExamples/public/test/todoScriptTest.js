@@ -25,18 +25,11 @@ describe('read function ', function () {
       done()
     })
   })
-
-  xit('should return error message on empty input', function (done) {
-    read('somestring', function (error, data) {
-      expect(error).to.equal(`Failed to load todo items`)
-      done()
-    })
-  })
 })
 
 describe('updateStatus function ', function () {
-  xit('should return updated item id ', function (done) {
-    updateStatus(528, false, function (error, data) {
+  it('should return updated item id ', function (done) {
+    updateStatus(dataObjectArray[0].id, false, function (error, data) {
       console.log(error, data)
       console.log(dataObjectArray[0].id, !dataObjectArray[0].status)
       expect(data).to.equal(`{ Updated task for given id = ${dataObjectArray[0].id} }`)
@@ -83,7 +76,7 @@ describe('delete function ', function () {
   })
 })
 
-describe('Escape HTML Special characters', function () {
+describe('Escape Special characters', function () {
   it('should return eascaped string when a string with special character is passed', function () {
     const scriptString = '<script></script>'
     expect(escapeHtml(scriptString)).to.equal('&lt;script&gt;&lt;&#x2F;script&gt;')

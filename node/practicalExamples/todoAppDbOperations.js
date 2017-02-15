@@ -14,15 +14,10 @@ function update (description, id, status = false) {
   } else {
     return connectionObject.query('UPDATE tasks SET DESCRIPTION = ?, STATUS = ? WHERE id = ?;', { replacements: [description, status, id] })
   }
-  // return connectionObject.query('UPDATE tasks SET DESCRIPTION = ?, STATUS = ? WHERE ID = ?;', { replacements: [description, status, id] })
 }
 
 function destroy (id) {
   return connectionObject.query('DELETE FROM tasks WHERE ID = ?;', { replacements: [id] })
 }
 
-function completedList() {
-  return connectionObject.query('SELECT ID, DESCRIPTION, STATUS FROM tasks WHERE STATUS = false')
-}
-
-module.exports = { read, insert, update, destroy, completedList }
+module.exports = { read, insert, update, destroy }

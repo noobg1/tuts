@@ -31,6 +31,29 @@ function filterList () {
   }
 }
 
+// function render (data) {
+
+// }
+
+function read (callback = () => {}) {
+  let dataObject
+  $.get('/api/read', (data) => {
+    data.forEach(function (item) {
+      elementsArray[item.id] = item
+    })
+    populate(data)
+    assignEventListeners(data)
+    hideFooter()
+    populateFooter()
+    $('.edit').hide()
+    dataObject = data
+  }).done(function () {
+    callback(null, dataObject, `Todo items loaded`)
+  }).fail(function () {
+    callback('Failed to load todo items', null)
+  })
+}
+
 function addItem (content, callback = () => {}) {
   let id
   console.log(escapeHtml(content))
@@ -184,51 +207,36 @@ function populate (data) {
 function toggleAll () {
   let numberOfItemsActive = 0, numberOfItemsCompleted = 0
   elementsArray.forEach(function (item) {
-    if (item.status === false)
-      numberOfItemsActive++ 
-    if(item.status === true)
+    if (item.status === false) {
+      numberOfItemsActive++
+    }
+    if (item.status === true) {
       numberOfItemsCompleted++
+    }
   })
   console.log(numberOfItemsActive, elementsArray.length)
   if (numberOfItemsActive === 0) {
      $('.toggle-all').prop('checked', true)
-   }  else if(numberOfItemsActive === numberOfItemsCompleted){
+  } else if (numberOfItemsActive === numberOfItemsCompleted){
      $('.toggle-all').prop('checked', false)
-   }
+  }
 }
 
 function populateFooter () {
   let numberOfItemsActive = 0
   elementsArray.forEach(function (item) {
-    if (item.status === false)      { numberOfItemsActive++ }
+    if (item.status === false) {
+       numberOfItemsActive++
+    }
   })
 
   if (numberOfItemsActive === 1)    {
     $('.todo-count').text(`${numberOfItemsActive} item left`)
-  }  else if (numberOfItemsActive === 0) {
+  } else if (numberOfItemsActive === 0) {
     $('.todo-count').text(`${numberOfItemsActive} items left`)
-  }  else    {
+  } else {
     $('.todo-count').text(`${numberOfItemsActive} items left`)
   }
-}
-
-function read (callback = () => {}) {
-  let dataObject
-  $.get('/api/read', (data) => {
-    data.forEach(function (item) {
-      elementsArray[item.id] = item
-    })
-    populate(data)
-    assignEventListeners(data)
-    hideFooter()
-    populateFooter()
-    $('.edit').hide()
-    dataObject = data
-  }).done(function () {
-    callback(null, dataObject, `Todo items loaded`)
-  }).fail(function () {
-      callback('Failed to load todo items', null)
-    })
 }
 
 function assignEventListeners (data) {
