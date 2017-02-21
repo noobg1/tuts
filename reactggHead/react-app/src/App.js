@@ -1,35 +1,53 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 
-class App extends React.Component {
+const HOC = (InnerComponent) => class extends React.Component {
   constructor () {
     super()
-    this.state = {items: [], filter: ''}
+    this.state = {count: 0}
   }
-  componentWillMount () {
-    fetch('http://swapi.co/api/people/?format=json')
-    .then( response => response.json() )
-    .then( ({results}) => {this.setState({items: results})} )
+  update () {
+    this.setState({count: this.state.count + 1})
   }
-  filterList (e) {
-    this.setState({filter: e.target.value})
+  componentWillMount() {
+    console.log('componentWillMount')
   }
   render () {
-    let items = this.state.items
-    if(this.state.filter) {
-      items = items.filter( (item) => item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
-    }
-    
+    return (
+      <InnerComponent
+      {...this.props} 
+      {...this.state}
+      update={this.update.bind(this)}/>
+    )
+  }
+}
+
+class App extends React.Component {
+  render () {
     return (
       <div>
-        <input onChange={this.filterList.bind(this)}/>
-        {items.map( item => <Person person={item}/>)}
-      
+        <Button>button</Button>
+        <hr/>
+        <LabelHOC>;label</LabelHOC>
       </div>
     )
   }
 }
 
-const Person = (props) => <h4>{props.person.name}</h4>
+const Button = HOC((props) => <button onClick={props.update}>{props.children} - {props.count}</button>)
+
+class Label extends React.Component {
+  componentWillMount() {
+    console.log('label componentWillMount')
+  }
+  
+  render () {
+    return (
+      <label onMouseMove={this.props.update}>{this.props.children} - {this.props.count}</label>
+    )
+  }
+}
+
+const LabelHOC = HOC(Label)
 
 export default App
