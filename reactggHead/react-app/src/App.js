@@ -1,19 +1,23 @@
 import React from 'react';
 
 class App extends React.Component {
+  constructor () {
+    super()
+    this.state = {currentEvent: '-----'}
+    this.update = this.update.bind(this)
+  }
+  update( e ) {
+    this.setState({currentEvent: e.type})
+  }
+
   render () {
     return (
-      <Title txt="prop sent"/>)
-  }
-}
-
-const Title = (props) => <h1> Title: {props.txt}</h1>
-
-Title.propTypes = {
-  txt(props, propName, component) {
-    if(!(propName in props)) {
-      return new Error(`missing ${propName}`)
-    }
+      <div>
+        <textarea 
+        onKeyPress={this.update} cols="30" rows="10" />
+        <h1>{this.state.currentEvent}</h1>
+      </div>
+      )
   }
 }
 
