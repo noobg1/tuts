@@ -7,6 +7,11 @@ let books = [
         name: "Getting Strated",
         page: 400,
         price: 300
+      },
+      { 
+        name: "Getting ended",
+        page: 400,
+        price: 300
       }
     ]
 
