@@ -1,0 +1,13 @@
+CREATE TABLE MARKS(
+   ID SERIAL PRIMARY KEY      NOT NULL,
+   SUBJECT_ID           INT  references SUBJECT(ID),
+   STUDENT_ID         INT      references STUDENT_INFO(ID)
+);
+
+INSERT INTO STUDENT_INFO (NAME, email, phone_number) VALUES('noobj', 'noobj@j.com', 7259702969);
+
+ALTER TABLE student_info ALTER COLUMN phone_number TYPE VARCHAR;
+
+INSERT INTO SUBJECT (SUB_NAME) VALUES('TOC');
+
+INSERT INTO marks (subject_id, STUDENT_ID) VALUES(1,1);

@@ -23,7 +23,7 @@ router.post('/write/:task', function (req, res) {
     res.status(200).send({ id: results[0].id, message: 'Task added' })
   })
   .catch(function (error) {
-    res.status(500).send(error)
+    res.status(404).send(error)
   })
 })
 

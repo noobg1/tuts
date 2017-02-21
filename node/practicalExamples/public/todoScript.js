@@ -31,83 +31,14 @@ function filterList () {
   }
 }
 
-// function render (data) {
-
-// }
-
-function read (callback = () => {}) {
-  let dataObject
-  $.get('/api/read', (data) => {
-    data.forEach(function (item) {
-      elementsArray[item.id] = item
-    })
-    populate(data)
-    assignEventListeners(data)
-    hideFooter()
-    populateFooter()
-    $('.edit').hide()
-    dataObject = data
-  }).done(function () {
-    callback(null, dataObject, `Todo items loaded`)
-  }).fail(function () {
-    callback('Failed to load todo items', null)
-  })
+function render () {
+  populate(elementsArray)
+  $('ul').children().off()
+  assignEventListeners(elementsArray)
+  hideFooter()
+  populateFooter()
 }
 
-function addItem (content, callback = () => {}) {
-  let id
-  console.log(escapeHtml(content))
-  $.post(`/api/write/${escapeHtml(content)}`, function (data) {
-    elementsArray[data.id] = {id: data.id, description: escapeHtml(content), status: false}
-    populate(elementsArray)
-    $('ul').children().off()
-    assignEventListeners(elementsArray)
-    hideFooter()
-    populateFooter()
-    id = data.id
-  }).done(function () {
-    callback(null, `Todo item added`)
-  }).fail(function () {
-    callback(`Cannot add item`, null)
-  })
-  $('#id-new-todo').val('')
-}
-
-function updateStatus (id, status, callback = () => {}) {
-  $.ajax({
-    url: `/api/update/${id}`,
-    type: 'PUT',
-    data: `status=${status}`,
-    error: () => { callback(`Failed to update item for given id`, null) },
-    success: (result) => {
-      elementsArray[id].status = status
-      populate(elementsArray)
-      $('ul').children().off()
-      assignEventListeners(elementsArray)
-      hideFooter()
-      populateFooter()
-      callback(null, result)
-    }
-  })
-}
-
-function updateDescription (id, description, callback = () => {}) {
-  $.ajax({
-    url: `/api/update/${id}`,
-    type: 'PUT',
-    data: `task=${escapeHtml(description)}`,
-    error: () => { callback(`Failed to update item for given id`, null) },
-    success: (result) => {
-      elementsArray[id].description = description
-      populate(elementsArray)
-      $('ul').children().off()
-      assignEventListeners(elementsArray)
-      hideFooter()
-      populateFooter()
-      callback(null, result)
-    }
-  })
-}
 
 function hideFooter () {
   if (Object.keys(elementsArray).length === 0) {
@@ -119,24 +50,6 @@ function hideFooter () {
   }
 }
 
-function deleteItem (id, callback = () => {}) {
-  $.ajax({
-    url: `/api/delete/${id}`,
-    type: 'DELETE',
-    error: () => { callback(`Failed to delete item for given id`, null) },
-    success: (result) => {
-      $(`li#${id}`).remove()
-      delete elementsArray[id]
-      populate(elementsArray)
-      $('ul').children().off()
-      assignEventListeners(elementsArray)
-      hideFooter()
-      populateFooter()
-      console.log(result)
-      callback(null, result)
-    }
-  })
-}
 
 $('#id-new-todo').keyup(function (event) {
   if (event.keyCode === 13) {
@@ -159,6 +72,7 @@ function afterRead (id) {
   $(`#label-${id}`).dblclick(function () {
     console.log('dbclick', id)
     const value = $(`#label-${id}`).hide().text()
+    $(`#btn-${id}`).hide()
     $(`#tb-${id}`).show().focus().val(value)
   })
 
