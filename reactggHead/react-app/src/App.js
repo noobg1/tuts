@@ -3,15 +3,17 @@ import React from 'react';
 class App extends React.Component {
   render () {
     return (
-      <Button>I <Heart /> React</Button>)
+      <Title txt="prop sent"/>)
   }
 }
 
-const Button = (props) => <button> {props.children}</button>
+const Title = (props) => <h1> Title: {props.txt}</h1>
 
-class Heart extends React.Component {
-  render () {
-    return <span>&hearts;</span>
+Title.propTypes = {
+  txt(props, propName, component) {
+    if(!(propName in props)) {
+      return new Error(`missing ${propName}`)
+    }
   }
 }
 
