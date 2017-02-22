@@ -12,6 +12,16 @@ let books = [
         name: "Getting ended",
         page: 400,
         price: 300
+      },
+      { 
+        name: "react",
+        page: 400,
+        price: 300
+      },
+      { 
+        name: "Redux",
+        page: 400,
+        price: 300
       }
     ]
 
