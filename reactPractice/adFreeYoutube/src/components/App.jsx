@@ -6,6 +6,7 @@ import VideoListView from './VideoListView.jsx'
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    console.log('cons')
     this.state = {
       videoList: [],
       currentVideo: {id: 'fd2Cayhez58'}

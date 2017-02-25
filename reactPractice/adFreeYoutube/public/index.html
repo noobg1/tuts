@@ -4,15 +4,46 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tag above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+   <style>
+        body {
+            background-color: #FFCC00;
+            padding: 20px;
+            margin: 0;
+            }
+        h1, h2, p, ul, li {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        ul.header li {
+            display: inline;
+            list-style-type: none;
+            margin: 0;
+        }
+        ul.header {
+            background-color: #111;
+            padding: 0;
+        }
+        ul.header li a {
+            color: #FFF;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 20px;
+            display: inline-block;
+        }
+        .content {
+            background-color: #FFF;
+            padding: 20px;
+        }
+        .content h2 {
+            padding: 0;
+            margin: 0;
+        }
+        .content li {
+            margin-bottom: 10px;
+        }
+        .active {
+            background-color: #0099FF;
+        }
+    </style>
     <title>React App</title>
   </head>
   <body>
