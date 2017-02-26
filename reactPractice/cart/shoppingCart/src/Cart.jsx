@@ -21,7 +21,7 @@ class Cart extends Component {
         itemsIncart = this.props.itemsInCart.item.map((eachItem, index) => {
           return <li key={index}>
             {eachItem.name} <br />
-            $: {eachItem.price} <br />
+            $: {eachItem.price} &nbsp;
             <button onClick={this.removeItem.bind(this, eachItem)}>x</button>
           </li>
         })

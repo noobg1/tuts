@@ -1,7 +1,7 @@
 const items = [
   {
     id: 1,
-    name: 'drone',
+    name: 'Drone',
     price: 100,
     description: 'It flies',
     quantity: 3,
@@ -9,7 +9,7 @@ const items = [
   },
   {
     id: 2,
-    name: 'copter',
+    name: 'Copter',
     price: 200,
     description: 'It flies',
     quantity: 1,
@@ -17,11 +17,19 @@ const items = [
   },
   {
     id: 3,
-    name: 'quad',
+    name: 'Quad',
     price: 150,
     description: 'It flies',
     quantity: 2,
     image: 'http://ecx.images-amazon.com/images/I/41xWkG1DJYL._AC_US436_FMwebp_QL65_.jpg'
+  },
+  {
+    id: 4,
+    name: 'Helicopter',
+    price: 80,
+    description: 'It flies',
+    quantity: 2,
+    image: 'http://ecx.images-amazon.com/images/I/41I-TSfzgDL.jpg'
   }
 ]
 

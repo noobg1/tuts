@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 
 
 class ListView extends Component {
-  render () {
-    const itemList = this.props.items.map((item, index) =>
-      { if(item.quantity > 0)
-         return <li key={item.name}><ItemView item={item} buyItem={this.props.buyItem} /></li>
-      }
+  render() {
+    const itemList = this.props.items.map((item, index) => {
+      if (item.quantity > 0)
+        return <li key={item.name}><ItemView item={item} buyItem={this.props.buyItem} /></li>
+    }
     )
     return (
       <div className="items">
@@ -19,7 +19,7 @@ class ListView extends Component {
 
 
 class ItemView extends Component {
-  buy (item) {
+  buy(item) {
     this.props.buyItem(item)
   }
   render() {

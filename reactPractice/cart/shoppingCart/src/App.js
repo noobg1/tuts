@@ -16,7 +16,7 @@ class App extends Component {
     }
   }
   buyItem(itemSelected) {
-    console.log(itemSelected)
+    //console.log(itemSelected)
     this.setState((oldState) => {
       const index = oldState.items.indexOf(itemSelected);
       let itemRemoved;
@@ -28,7 +28,7 @@ class App extends Component {
       }
     })
   }
-  removeFromCart (itemToRemove) {
+  removeFromCart(itemToRemove) {
     this.setState((oldState) => {
       const index = oldState.cart.item.indexOf(itemToRemove);
       let itemAdded;
@@ -47,7 +47,7 @@ class App extends Component {
         <div className="">
           <ListView items={this.state.items} buyItem={this.buyItem.bind(this)} />
         </div>
-        <Cart className="cart" itemsInCart={this.state.cart} removeFromCart={this.removeFromCart.bind(this)}/>
+        <Cart className="cart" itemsInCart={this.state.cart} removeFromCart={this.removeFromCart.bind(this)} />
       </div>
     );
   }
