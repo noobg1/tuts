@@ -47,7 +47,7 @@ class App extends Component {
         <div className="">
           <ListView items={this.state.items} buyItem={this.buyItem.bind(this)} />
         </div>
-        <Cart itemsInCart={this.state.cart} removeFromCart={this.removeFromCart.bind(this)}/>
+        <Cart className="cart" itemsInCart={this.state.cart} removeFromCart={this.removeFromCart.bind(this)}/>
       </div>
     );
   }

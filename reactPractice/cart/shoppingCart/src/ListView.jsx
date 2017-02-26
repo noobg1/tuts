@@ -10,7 +10,7 @@ class ListView extends Component {
       }
     )
     return (
-      <div >
+      <div className="items">
         {itemList}
       </div>
     );
@@ -24,7 +24,7 @@ class ItemView extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="item">
         <img src={this.props.item.image} width="100px" />
         <ul>
           <li>{this.props.item.name}</li>
