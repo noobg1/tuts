@@ -4,9 +4,11 @@ import YTSearch from 'youtube-api-search';
 class Apage extends Component {
   constructor(props) {
     super(props)
-    this.state = {display: true}
-    this.imageC = <img src="http://graffitialphabet.org/letter-c/uppercase-graffiti-alphabet-c.jpg" />;
-    this.imageF = <img src="http://alphabetletters.org/letters/letter-f/gothic-alphabet-letter-f.jpg" />;
+    this.state = {
+      display: this.props.toggle,
+      imageC: <img src="http://graffitialphabet.org/letter-c/uppercase-graffiti-alphabet-c.jpg" />,
+      imageF: <img src="http://alphabetletters.org/letters/letter-f/gothic-alphabet-letter-f.jpg" />
+    }
   }
   updateDisplay () {
     this.setState ((oldState) => {
@@ -14,10 +16,11 @@ class Apage extends Component {
     })
   }
   render() {
+    //console.log(this.props)
     if(this.state.display ) {
        return (
         <div>
-          {this.imageC}
+          {this.state.imageC}
           A-Cost 
           <button onClick={this.updateDisplay.bind(this)}>A-FTE</button>
         </div>
@@ -26,7 +29,7 @@ class Apage extends Component {
     else {
       return (
         <div>
-          {this.imageF}
+          {this.state.imageF}
           A-FTE
           <button onClick={this.updateDisplay.bind(this)}>A-COST</button>
         </div>
