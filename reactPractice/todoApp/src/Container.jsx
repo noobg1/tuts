@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TodoList from './TodoList.jsx';
 import axios from 'axios';
 import Apicalls from './Apicalls.js'
+import qs from 'qs';
 
 class Container extends Component {
   constructor(props) {
@@ -30,8 +31,22 @@ class Container extends Component {
       console.log(error);
     });
   }
-  updateTodo (todo) {
-    console.log(todo);
+  updateTodo (todo, updatedDesciption, status) {
+    console.log('here',updatedDesciption);
+    let toUpdate = {
+      task: updatedDesciption,
+      status: status
+      }
+    axios.put(`http://localhost:8001/api/update/${todo.id}`,qs.stringify(toUpdate))
+    .then( (response) => {
+      console.log('here.........',response)
+      todo.status = status;
+      todo.description = updatedDesciption;
+      this.state.todos[todo.id] = todo;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
   render() {
     // console.log(this.state.todos)
