@@ -9,7 +9,7 @@ class App extends Component {
           <header className="header">
             <h1>todos</h1>
           </header>
-          <Container />
+          <Container filter={this.props.params.filter}/>
       </section>
     );
   }

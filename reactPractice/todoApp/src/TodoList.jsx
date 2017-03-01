@@ -5,13 +5,12 @@ const TodoList = (props) => {
   const mainSection = {
     display: 'block'
   };
-  console.log(props.todos);
+
   let todos = props.todos.map((todo) => {
-    return <Todo key={todo.id} todo={todo} updateTodo={props.updateTodo}/>
+    return <Todo key={todo.id} todo={todo} updateTodo={props.updateTodo} destroyTodo={props.destroyTodo}/>
   });
-
+{console.log('here')}
   return (
-
     <section className="main" style={mainSection}>
       <ul classID="id-todo-list" className="todo-list">
           {todos} 

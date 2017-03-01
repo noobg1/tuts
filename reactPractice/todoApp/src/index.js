@@ -6,8 +6,8 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 're
 
 ReactDOM.render(
       <Router history={hashHistory}>
-        <Route path='/' component={App} />
-        <Route path='/:actionTab' component={App} />
+        <Route path='/(:filter)' component={App} />
+        
       </Router>,
   document.getElementById('root')
 );
