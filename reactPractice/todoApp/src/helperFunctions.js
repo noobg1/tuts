@@ -1,9 +1,9 @@
 const getActiveItems = (items) => {
-  let activeTodos = 0;
+  let activeTodos = 0
   items.forEach((item) => {
-    if(item.status)
-      activeTodos++;
+    if(!item.status)
+      activeTodos++
   })
-  return activeTodos;
+  return activeTodos
 }
-module.exports = {getActiveItems};
+module.exports = {getActiveItems}

@@ -11,7 +11,7 @@ button {
 	background: none;
 	font-size: 100%;
 	vertical-align: baseline;
-	font-family: inherit;
+	font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: inherit;
 	color: inherit;
 	-webkit-appearance: none;
@@ -123,6 +123,7 @@ label[for='toggle-all'] {
 }
 
 .toggle-all {
+	margin-top: 70px;
 	position: absolute;
 	top: -55px;
 	left: -12px;
@@ -320,6 +321,11 @@ html .clear-completed:active {
 	position: relative;
 }
 
+.active {
+	color: #bfbfbf;
+	text-decoration: line-through;;
+	
+}
 .clear-completed:hover {
 	text-decoration: underline;
 }
